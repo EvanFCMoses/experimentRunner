@@ -87,13 +87,14 @@ class MultiTestRunner:
 	timeToTestEachStrategy = 0
 	StrategiesToTest = []
 	allResults = []
+	
 
 	def __init__(self, amountOfIterations, strategiesToTest):
 		self.StrategiesToTest = strategiesToTest
 		self.timeToTestEachStrategy = amountOfIterations
+		self.allResults = [None] * len(self.StrategiesToTest)
 
 	def RunTheTests(self):
-		allResults = [None] * len(self.StrategiesToTest)
 		for x in range(0, len(self.StrategiesToTest)):
 			results = [None] * self.timeToTestEachStrategy
 			for i in range(0, self.timeToTestEachStrategy):
@@ -101,23 +102,20 @@ class MultiTestRunner:
 				tester = TestRunner(100, self.StrategiesToTest[x], self.StrategiesToTest[x].threshold)
 				tester.RunTests()
 				results[i] = tester.ReturnTheResults()
-			allResults[x] = results
+			self.allResults[x] = results
 
 
 
 	def PercentageThatPassed(self):
 
-		
-		print('len of allResults: ' + str(len(self.allResults)))
 		for i in range(0, len(self.allResults)):
-			print('made it')
 			amountOfSuccesses = 0
 			for j in range(0, len(self.allResults[i])):
-				if self.strategiesToTest[i][j].finalCount > 0:
-					amountOfSuccess = amountOfSuccesses+1
-			print('for strategy ' + str(self.StrategiesToTest[i]) + ' percentage: ' + str(amountOfSuccesses/timeToTestEachStrategy))
+				if self.allResults[i][j].finalCount > 0:
+					amountOfSuccesses = amountOfSuccesses + 1
+			print('for strategy ' + str(self.StrategiesToTest[i]) + ' percentage: ' + str(amountOfSuccesses/self.timeToTestEachStrategy))
 
-		#print('successPercentage: ' + str(amountOfSuccesses/len(strategiesToTest)))
+
 
 
 
